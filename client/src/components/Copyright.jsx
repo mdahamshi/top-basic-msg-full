@@ -9,7 +9,12 @@ export default function Copyright({
         {appName} © {year}
         <br />
         Built with ❤️ by{' '}
-        <a className='dark:text-primary text-primary' href="https://sarawebs.com" target="_blank" rel="noopener">
+        <a
+          className="dark:text-primary text-primary"
+          href="https://sarawebs.com"
+          target="_blank"
+          rel="noopener"
+        >
           SaraWebs
         </a>
       </p>

@@ -16,13 +16,44 @@ const messagesGetmessages = async (req, res) => {
 };
 
 const messagesCreatePost = async (req, res) => {
-  const { messagename } = req.body;
-  if (!messagename) throw new Error('No message name provided');
-
-  await db.insertmessagename(messagename);
+  const message = req.body;
+  if (!message) throw new Error('No message name provided');
+  try {
+    await db.insertmessagename(message);
+  } catch (err) {
+    throw new Error('Error while creating message:' + err);
+  }
   res.status(201).json({
     message: 'message created',
-    messagename,
+  });
+};
+
+const messageDelete = async (req, res) => {
+  const messageId = req.params.id;
+  if (!messageId) throw new Error('No message name provided');
+  try {
+    await db.deletMessage({ id: messageId });
+  } catch (err) {
+    throw new Error('Error while deleting message:' + err);
+  }
+  res.status(200).json({
+    message: 'message deleted',
+    id: messageId,
+  });
+};
+const messageUpdate = async (req, res) => {
+  const { id } = req.params;
+  const { name, text } = req.body;
+
+  if (!id || !name || !text) throw new Error('Failed to update message');
+  try {
+    await db.updateMessage({ id, name, text });
+  } catch (err) {
+    throw new Error('Error while deleting message:' + err);
+  }
+  res.status(200).json({
+    message: 'message updated',
+    id,
   });
 };
 
@@ -30,4 +61,6 @@ module.exports = {
   messagesCreateGet,
   messagesGetmessages,
   messagesCreatePost,
+  messageDelete,
+  messageUpdate,
 };

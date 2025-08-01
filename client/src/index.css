@@ -2,6 +2,7 @@
 @plugin 'flowbite-react/plugin/tailwindcss';
 @source '../.flowbite-react/class-list.json';
 @reference './theme.css';
+@custom-variant dark (&:where(.dark, .dark *));
 
 * {
   box-sizing: border-box;
@@ -10,7 +11,7 @@
 :root {
   --primary: 214 80% 55%;
   --accent: var(--primary);
-  --primaryDark: #1F2937;
+  --primaryDark: #1f2937;
   --bgPrimary: #f9f9f9;
 }
 
@@ -24,7 +25,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
-  font-size: 0.875rem;
+  font-size: 1rem;
 
   --lite-gray: #f0f1f4;
   --label-width: 120px;
@@ -48,7 +49,6 @@ main .wrap {
   padding: 24px;
   width: 100%;
 }
-
 
 main {
   animation-duration: 0.5s;
@@ -83,16 +83,23 @@ body {
   min-width: 320px;
   min-height: 100dvh;
   background-color: var(--bgPrimary);
-
+}
+.clickable:hover,
+button:hover,
+.link-btn:hover {
+  filter: brightness(1.1);
+  cursor: pointer;
+  transform: scale(1.03);
+  transition: all 0.3s ease;
 }
 
+.dark {
+  --primary: white;
+  --accent: var(--primary);
+  --primaryDark: #1f2937;
+  --bgPrimary: rgb(8, 11, 36);
+}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    
-    --primary: white;
-    --accent: var(--primary);
-    --primaryDark: #1F2937;
-    --bgPrimary: black;
-  }
+.btn-primary {
+  @apply bg-primary dark:bg-primary hover:bg-primary/65 dark:hover:bg-primary/65;
 }

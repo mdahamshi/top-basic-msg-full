@@ -1,7 +1,7 @@
 const messagesRoutes = require('./messages.js');
 
 function registerRoutes(app) {
-  app.use('/messages', messagesRoutes);
+  app.use('/api', messagesRoutes);
 }
 
 module.exports = registerRoutes;

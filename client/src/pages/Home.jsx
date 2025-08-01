@@ -4,6 +4,7 @@ import { useLoaderData } from 'react-router-dom';
 import Grid from '../components/Grid';
 import GridLinkCard from '../components/GridLinkCard';
 import MessageBubble from '../components/MessageBubble';
+import { useApp } from '../context/AppContext';
 import { getRandomColor } from '@sarawebs/sb-utils';
 /**
  * Loader function to fetch msg data from the Express backend.
@@ -11,42 +12,39 @@ import { getRandomColor } from '@sarawebs/sb-utils';
  * under the variable: VITE_API_SERVER.
  */
 export async function loader({ request }) {
-  const server = import.meta.env.VITE_API_SERVER;
-  const data = await fetchData({ server, endpoint: 'messages', limit: 12 });
+  const data = await fetchData({ endpoint: 'messages', limit: 12 });
   return { data };
 }
 
 export default function Home() {
   const { data } = useLoaderData();
   const messages = data.messages;
+  const { appName } = useApp();
 
   return (
     <main className="home">
-      <h1 className='text-4xl font-bold mb-4 text-primary'>
-        Welcome to the{' '}
-        <a href="https://sarawebs.com" target="_blank" rel="noopener">
-          SaraWebs
-        </a>{' '}
-        React + Express starter kit
+      <h1 className="text-4xl font-bold mb-4 text-primary">
+        Welcome to the {appName}
       </h1>
 
       <section className="msg-list">
-        <div className='flex flex-col  gap-4 mx-auto p-6 max-w-200'>
+        <div className="flex flex-col  gap-4 mx-auto max-w-100">
           {messages.map((msg) => (
-            <GridLinkCard  key={msg.id} link={`message/${msg.id}`}>
-              <MessageBubble
-              username={msg.name}
+            <MessageBubble
+              key={msg.id}
+              name={msg.name}
               text={msg.text}
+              id={msg.id}
+              editable={!msg.protected}
               timestamp={msg.added}
               avatarColor={getRandomColor()}
-              />
-            </GridLinkCard>
+            />
           ))}
         </div>
 
         <ul></ul>
       </section>
-      <section className='dark:text-white'>
+      <section className="mt-5 dark:text-white">
         <h2>
           Visit{' '}
           <a
