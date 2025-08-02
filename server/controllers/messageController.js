@@ -11,21 +11,23 @@ const messagesGetmessages = async (req, res) => {
   const messages = await db.getAllmessages();
   res.json({
     title: 'Create message',
-    messages: messages,
+    data: messages,
   });
 };
 
 const messagesCreatePost = async (req, res) => {
   const message = req.body;
-  if (!message || !message.name || ! message.text) throw new Error('No message name provided');
+  if (!message || !message.name || !message.text)
+    throw new Error('No message name provided');
   try {
-    await db.insertmessagename(message);
+    const row = await db.insertmessagename(message);
+    res.status(201).json({
+      message: 'message created',
+      data: row,
+    });
   } catch (err) {
     throw new Error('Error while creating message:' + err);
   }
-  res.status(201).json({
-    message: 'message created',
-  });
 };
 
 const messageDelete = async (req, res) => {

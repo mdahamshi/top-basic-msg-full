@@ -15,7 +15,7 @@ export const MessageProvider = ({ children }) => {
       const res = await messagesApi.fetchMessages();
       setMessages(res.data);
     } catch (err) {
-      console.error("Failed to fetch messages", err);
+      console.error('Failed to fetch messages', err);
     } finally {
       setLoading(false);
     }
@@ -26,7 +26,7 @@ export const MessageProvider = ({ children }) => {
       const res = await messagesApi.createMessage(messageData);
       setMessages((prev) => [res.data, ...prev]);
     } catch (err) {
-      console.error("Failed to create message", err);
+      console.error('Failed to create message', err);
     }
   };
 
@@ -35,7 +35,7 @@ export const MessageProvider = ({ children }) => {
       await messagesApi.deleteMessage(id);
       setMessages((prev) => prev.filter((msg) => msg.id !== id));
     } catch (err) {
-      console.error("Failed to delete message", err);
+      console.error('Failed to delete message', err);
     }
   };
 
@@ -43,10 +43,10 @@ export const MessageProvider = ({ children }) => {
     try {
       const res = await messagesApi.updateMessage(id, updatedData);
       setMessages((prev) =>
-        prev.map((msg) => (msg.id === id ? res.data : msg))
+        prev.map((msg) => (msg.id === id ? { ...msg, ...updatedData } : msg))
       );
     } catch (err) {
-      console.error("Failed to update message", err);
+      console.error('Failed to update message', err);
     }
   };
 

@@ -2,22 +2,21 @@ import pool from './pools.js';
 
 export async function getAllmessages() {
   const { rows } = await pool.query(
-    'SELECT * FROM messages ORDER BY messages.added DESC'
+    'SELECT * FROM messages ORDER BY messages.editable ASC,  messages.added DESC'
   );
   return rows;
 }
 
 export async function insertmessagename(message) {
-  await pool.query('INSERT INTO messages (name, text)  VALUES ($1,$2)', [
-    message.name,
-    message.text,
-  ]);
+  const res = await pool.query(
+    'INSERT INTO messages (name, text)  VALUES ($1,$2) RETURNING *',
+    [message.name, message.text]
+  );
+  return res.rows[0];
 }
 
 export async function deletMessage(message) {
-  const result = await pool.query('DELETE FROM messages WHERE id = $1', [
-    message.id,
-  ]);
+  await pool.query('DELETE FROM messages WHERE id = $1', [message.id]);
 }
 
 export async function updateMessage(message) {

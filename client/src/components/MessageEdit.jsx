@@ -1,25 +1,19 @@
 'use client';
-import { fetchData } from '../api/fetch';
-
 import { Button, Label, TextInput, Textarea } from 'flowbite-react';
 import { useState } from 'react';
 import { SendHorizontal } from 'lucide-react';
+import { useMessages } from '../context/MessageContext';
 
-const MessageEdit = ({ id, nameIn, textIn, onSave, onCancel }) => {
-  const [name, setName] = useState(nameIn);
-  const [text, setText] = useState(textIn);
+const MessageEdit = ({ onCancelSave, msg }) => {
+  const [name, setName] = useState(msg.name);
+  const [text, setText] = useState(msg.text);
+  const { editMessage } = useMessages();
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const body = { name, text };
-    try {
-      await fetchData({
-        body,
-        method: 'PUT',
-        endpoint: `messages/${id}`,
-      });
-    } catch (err) {}
-    onSave({ name, text, id });
+    if (name !== msg.name || text !== msg.text)
+      editMessage(msg.id, { name, text });
+    onCancelSave();
   };
 
   return (
@@ -60,7 +54,11 @@ const MessageEdit = ({ id, nameIn, textIn, onSave, onCancel }) => {
       </div>
 
       <div className="w-full flex gap-4 justify-end">
-        <Button type="submit" className="btn-primary flex gap-4">
+        <Button
+          onClick={onCancelSave}
+          type="button"
+          className="btn-primary flex gap-4"
+        >
           Cancel
         </Button>
         <Button type="submit" className="btn-primary flex gap-4">

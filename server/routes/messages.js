@@ -5,9 +5,7 @@ const router = Router();
 
 router.get('/messages', messagesController.messagesGetmessages);
 
-router.get('/new', messagesController.messagesCreateGet);
-
-router.post('/new', messagesController.messagesCreatePost);
+router.post('/messages', messagesController.messagesCreatePost);
 
 router.delete('/messages/:id', messagesController.messageDelete);
 

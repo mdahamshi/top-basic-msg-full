@@ -1,37 +1,21 @@
 import { useState } from 'react';
 
-import { fetchData } from '../api/fetch';
-import { useLoaderData } from 'react-router-dom';
 import MessageBubble from '../components/MessageBubble';
 import { useApp } from '../context/AppContext';
 import { getRandomColor } from '@sarawebs/sb-utils';
 import { MessageCircle } from 'lucide-react';
 import NewMessage from '../components/NewMessage';
+import { useMessages } from '../context/MessageContext';
 
 import { Button } from 'flowbite-react';
-/**
- * Loader function to fetch msg data from the Express backend.
- * The backend server address is stored in the client `.env` file
- * under the variable: VITE_API_SERVER.
- */
-export async function loader() {
-  const initialData = await fetchData({ endpoint: 'messages', limit: 12 });
-  return { initialData };
-}
 
 export default function Home() {
-  const { initialData } = useLoaderData();
+  const { messages, removeMessage, loading } = useMessages();
 
   const { appName } = useApp();
   const [open, setModal] = useState(false);
-  const [messages, setData] = useState(initialData.messages);
 
   const handleModalClose = (refetch) => {
-    if (refetch) {
-      fetchData({ endpoint: 'messages', limit: 12 }).then((data) =>
-        setData(data.messages)
-      );
-    }
     window.history.replaceState(null, '', '/');
     setModal(false);
   };
@@ -61,13 +45,8 @@ export default function Home() {
           {messages.map((msg) => (
             <MessageBubble
               key={msg.id}
-              name={msg.name}
-              text={msg.text}
-              id={msg.id}
-              editable={!msg.protected}
-              timestamp={msg.added}
+              msg={msg}
               avatarColor={getRandomColor()}
-              onDelete={handelDelete}
               onSave={onMessageUpdate}
             />
           ))}

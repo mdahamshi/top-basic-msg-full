@@ -1,5 +1,4 @@
 'use client';
-import { fetchData } from '../api/fetch';
 
 import {
   Button,
@@ -15,6 +14,7 @@ import {
 } from 'flowbite-react';
 import { useState } from 'react';
 import { SendHorizontal } from 'lucide-react';
+import { useMessages } from '../context/MessageContext';
 
 const theme = createTheme({
   content: {
@@ -25,6 +25,7 @@ const theme = createTheme({
 export default function Component({ open, onClose }) {
   const [name, setName] = useState('');
   const [text, setText] = useState('');
+  const { addMessage } = useMessages();
 
   function onCloseModal() {
     setName('');
@@ -34,13 +35,7 @@ export default function Component({ open, onClose }) {
   const handleSend = async (e) => {
     e.preventDefault();
     const body = { name, text };
-    try {
-      await fetchData({
-        body,
-        method: 'POST',
-        endpoint: 'new',
-      });
-    } catch (err) {}
+    addMessage(body);
     setName('');
     setText('');
     onClose(true);

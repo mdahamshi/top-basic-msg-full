@@ -3,57 +3,34 @@ import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { Trash, SquarePen } from 'lucide-react';
 import { Button } from 'flowbite-react';
-import { fetchData } from '../api/fetch';
 import { useNavigate } from 'react-router-dom';
 import MessageEdit from './MessageEdit';
+import { useMessages } from '../context/MessageContext';
+
 const getInitials = (name) => name.charAt(0).toUpperCase();
 
-const MessageBubble = ({
-  name,
-  text,
-  timestamp,
-  id,
-  editable,
-  avatarColor = '#6C63FF',
-  onDelete,
-  onSave
-}) => {
+const MessageBubble = ({ msg, avatarColor = '#6C63FF', onSave }) => {
   const [edit, setEdit] = useState(false);
-  const navigate = useNavigate();
+  const { removeMessage, editMessage } = useMessages();
 
+  const navigate = useNavigate();
+  const { name, text, added, id, editable } = { ...msg };
   const messageDelete = async (id) => {
     const confirmed = window.confirm(
       'Are you sure you want to delete this message?'
     );
     if (!confirmed) return;
 
-    try {
-      await fetchData({
-        method: 'DELETE',
-        endpoint: `messages/${id}`,
-      });
-    } catch (err) {}
-    onDelete(id);
+    return removeMessage(id);
   };
   if (edit)
-    return (
-      <MessageEdit
-        id={id}
-        textIn={text}
-        nameIn={name}
-        onCancel={() => setEdit(false)}
-        onSave={({text, name, id}) => {
-          onSave({text, name, id});
-          setEdit(false)}
-        }
-      />
-    );
+    return <MessageEdit msg={msg} onCancelSave={() => setEdit(false)} />;
   return (
     <div className="flex flex-col p-4   rounded-md shadow-md  dark:bg-primaryDark  justify-between gap-3 py-2">
       <div>
         <div className="flex gap-3 justify-center">
           <span className="ml-2 text-xs text-gray-400">
-            {format(new Date(timestamp), 'PPP, p')}
+            {format(new Date(added), 'PPP, p')}
           </span>
         </div>
       </div>
@@ -68,7 +45,7 @@ const MessageBubble = ({
 
         {/* Message content */}
         <div>
-          {/* Name + Timestamp */}
+          {/* Name + added */}
           <div className="dark:text-white text-sm font-semibold">{name}</div>
 
           {/* Bubble */}
@@ -85,10 +62,7 @@ const MessageBubble = ({
           <Button color="yellow" onClick={() => setEdit(true)}>
             <SquarePen className="dark:stroke-white" />
           </Button>
-          <Button
-            color="red"
-            onClick={() => messageDelete(id)}
-          >
+          <Button color="red" onClick={() => messageDelete(id)}>
             <Trash className="dark:stroke-white" />
           </Button>
         </div>

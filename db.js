@@ -7,16 +7,16 @@ CREATE TABLE IF NOT EXISTS messages (
   name TEXT NOT NULL,
   text TEXT NOT NULL,
   added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  protected BOOLEAN DEFAULT FALSE
+  editable BOOLEAN DEFAULT TRUE
 );
 
-INSERT INTO messages (name, text, protected) VALUES
-('Mohammad', 'Love you too :)', TRUE),
-('Sarah', 'I love Dad', TRUE),
-('Amina', 'I also love Dad.', TRUE),
-('John', 'Hello everyone!', FALSE),
-('Lina', 'How are you all doing?', FALSE),
-('Omar', 'Nice to meet you!', FALSE);
+INSERT INTO messages (name, text, editable) VALUES
+('Mohammad', 'Love you too :)', FALSE),
+('Sarah', 'I love Dad', FALSE),
+('Amina', 'I also love Dad.', FALSE),
+('John', 'Hello everyone!', TRUE),
+('Lina', 'How are you all doing?', TRUE),
+('Omar', 'Nice to meet you!', TRUE);
 `;
 
 async function main() {

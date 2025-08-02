@@ -8,12 +8,14 @@ const parseJSON = async (res) => {
 };
 
 export const fetchMessages = () =>
-  fetch(API_URL).then(parseJSON);
+  fetch(API_URL, { mode: 'cors' }).then(parseJSON);
 
 export const createMessage = (data) =>
   fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    mode: 'cors',
+
     body: JSON.stringify(data),
   }).then(parseJSON);
 
@@ -21,6 +23,8 @@ export const updateMessage = (id, data) =>
   fetch(`${API_URL}/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
+    mode: 'cors',
+
     body: JSON.stringify(data),
   }).then(parseJSON);
 
