@@ -1,26 +1,16 @@
 'use client';
 import { fetchData } from '../api/fetch';
 
-import {
-  Button,
-  Checkbox,
-  Label,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  TextInput,
-  Textarea,
-} from 'flowbite-react';
+import { Button, Label, TextInput, Textarea } from 'flowbite-react';
 import { useState } from 'react';
 import { SendHorizontal } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
-const MessageEdit = ({ id, nameIn, textIn, onSave }) => {
+const MessageEdit = ({ id, nameIn, textIn, onSave, onCancel }) => {
   const [name, setName] = useState(nameIn);
   const [text, setText] = useState(textIn);
-  const navigate = useNavigate();
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     const body = { name, text };
     try {
       await fetchData({
@@ -29,13 +19,18 @@ const MessageEdit = ({ id, nameIn, textIn, onSave }) => {
         endpoint: `messages/${id}`,
       });
     } catch (err) {}
-    onSave();
+    onSave({ name, text, id });
   };
+
   return (
-    <div className="p-4  dark:bg-primaryDark  rounded-md shadow-md  space-y-6">
+    <form
+      onSubmit={handleUpdate}
+      className="p-4 dark:bg-primaryDark rounded-md shadow-md space-y-6"
+    >
       <h3 className="text-xl font-medium text-gray-900 dark:text-white">
         Update Message
       </h3>
+
       <div>
         <div className="mb-2 block">
           <Label htmlFor="name">Your name</Label>
@@ -49,6 +44,7 @@ const MessageEdit = ({ id, nameIn, textIn, onSave }) => {
           required
         />
       </div>
+
       <div>
         <div className="mb-2 block">
           <Label htmlFor="text">Your Message</Label>
@@ -56,7 +52,6 @@ const MessageEdit = ({ id, nameIn, textIn, onSave }) => {
         <Textarea
           rows={4}
           id="text"
-          type="textarea"
           value={text}
           onChange={(event) => setText(event.target.value)}
           required
@@ -64,13 +59,16 @@ const MessageEdit = ({ id, nameIn, textIn, onSave }) => {
         />
       </div>
 
-      <div className="w-full flex justify-end">
-        <Button onClick={handleUpdate} className=" btn-primary flex gap-4">
+      <div className="w-full flex gap-4 justify-end">
+        <Button type="submit" className="btn-primary flex gap-4">
+          Cancel
+        </Button>
+        <Button type="submit" className="btn-primary flex gap-4">
           Save
-          <SendHorizontal />
+          <SendHorizontal size={8} />
         </Button>
       </div>
-    </div>
+    </form>
   );
 };
 

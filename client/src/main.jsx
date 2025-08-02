@@ -6,13 +6,16 @@ import { AppProvider } from './context/AppContext';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 import { routefromelement } from './routes';
+import { MessageProvider } from './context/MessageContext';
 
 const router = createBrowserRouter(routefromelement);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppProvider>
-      <RouterProvider router={router} />
+      <MessageProvider>
+        <RouterProvider router={router} />
+      </MessageProvider>
     </AppProvider>
   </StrictMode>
 );

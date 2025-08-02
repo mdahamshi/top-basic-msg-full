@@ -17,7 +17,7 @@ const messagesGetmessages = async (req, res) => {
 
 const messagesCreatePost = async (req, res) => {
   const message = req.body;
-  if (!message) throw new Error('No message name provided');
+  if (!message || !message.name || ! message.text) throw new Error('No message name provided');
   try {
     await db.insertmessagename(message);
   } catch (err) {

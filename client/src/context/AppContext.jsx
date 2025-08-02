@@ -28,6 +28,7 @@ export function AppProvider({ children }) {
     () => ({
       toggleTheme,
       appName,
+      theme,
     }),
     [theme]
   );

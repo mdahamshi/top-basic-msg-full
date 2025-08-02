@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import Header from '../components/Header';
-import { Outlet, useNavigation } from 'react-router-dom';
+import {
+  Outlet,
+  useNavigation,
+  useLocation,
+} from 'react-router-dom';
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 import LoadingOverlay from '../components/LoadingOverly';
-import { links } from '../assets/links';
 import { getRandomColor } from '@sarawebs/sb-utils';
 import { useApp } from '../context/AppContext';
 import Copyright from '../components/Copyright';
+
 const colors = [
   '345 75% 31%', // #8e1330
   '43 66% 32%', // #8a6c1d
@@ -35,6 +38,7 @@ const colors = [
 export default function Root() {
   const navigation = useNavigation();
   const { appName } = useApp();
+  const location = useLocation();
 
   useEffect(() => {
     document.documentElement.style.setProperty(
