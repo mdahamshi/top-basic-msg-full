@@ -1,6 +1,6 @@
 const SERVER = import.meta.env.VITE_API_SERVER;
 
-const API_URL = `${SERVER}/api/messages`;
+const API_URL = `${SERVER}/messages`;
 
 const parseJSON = async (res) => {
   if (!res.ok) throw new Error(await res.text());
