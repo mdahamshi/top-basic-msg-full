@@ -1,6 +1,6 @@
 const { Pool } = require('pg');
 require('dotenv').config();
-console.lof(`connecting to ${process.env.POSTGRES_DB}`);
+console.log(`connecting to ${process.env.POSTGRES_DB}`);
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
