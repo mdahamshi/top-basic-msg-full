@@ -63,7 +63,7 @@ const MessageEdit = ({ onCancelSave, msg }) => {
         </Button>
         <Button type="submit" className="btn-primary flex gap-4">
           Save
-          <SendHorizontal size={8} />
+          <SendHorizontal />
         </Button>
       </div>
     </form>
