@@ -22,7 +22,11 @@ INSERT INTO messages (name, text, editable) VALUES
 async function main() {
   console.log('seeding...');
   const client = new Client({
-    connectionString: process.env.DATABASE_URL,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    host: 'postgres',
+    port: process.env.POSTGRES_DB_PORT,
+    database: process.env.POSTGRES_DB,
   });
   await client.connect();
   await client.query(SQL);

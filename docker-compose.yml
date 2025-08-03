@@ -1,0 +1,43 @@
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: msgapp_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - appnet
+
+  server:
+    build: ./server
+    container_name: msgapp_server
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+    networks:
+      - appnet
+
+  nginx:
+    build: ./
+    container_name: msgapp_nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    networks:
+      - appnet
+
+volumes:
+  pgdata:
+
+
+networks:
+  appnet:
+
