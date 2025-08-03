@@ -14,7 +14,19 @@ const messagesGetmessages = async (req, res) => {
     data: messages,
   });
 };
-
+const messageGet = async (req, res) => {
+  const messageId = req.params.id;
+  if (!messageId) throw new Error('No message id provided');
+  try {
+    const message = await db.getMessages(messageId);
+    res.status(200).json({
+      message: 'message exist',
+      data: message,
+    });
+  } catch (err) {
+    throw new Error('Error while fetching message:' + err);
+  }
+};
 const messagesCreatePost = async (req, res) => {
   const message = req.body;
   if (!message || !message.name || !message.text)
@@ -32,9 +44,9 @@ const messagesCreatePost = async (req, res) => {
 
 const messageDelete = async (req, res) => {
   const messageId = req.params.id;
-  if (!messageId) throw new Error('No message name provided');
+  if (!messageId) throw new Error('No message id provided');
   try {
-    await db.deletMessage({ id: messageId });
+    await db.deletMessage(id);
   } catch (err) {
     throw new Error('Error while deleting message:' + err);
   }
@@ -65,4 +77,5 @@ module.exports = {
   messagesCreatePost,
   messageDelete,
   messageUpdate,
+  messageGet,
 };
