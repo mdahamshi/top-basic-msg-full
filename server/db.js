@@ -28,9 +28,6 @@ async function main() {
     host: process.env.POSTGRES_DB_HOST,
     port: process.env.POSTGRES_DB_PORT,
     database: process.env.POSTGRES_DB,
-    ssl: {
-      rejectUnauthorized: false,
-    },
   });
   await client.connect();
   await client.query(SQL);
