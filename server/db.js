@@ -21,6 +21,7 @@ INSERT INTO messages (name, text, editable) VALUES
 
 async function main() {
   console.log('seeding...');
+  console.lof(`connecting to ${process.env.POSTGRES_DB}`);
   const client = new Client({
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
