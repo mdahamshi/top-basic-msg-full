@@ -49,7 +49,7 @@ const MessageBubble = ({ msg, avatarColor = '#6C63FF', onSave }) => {
           <div className="dark:text-white text-sm font-semibold">{name}</div>
 
           {/* Bubble */}
-          <div className="bg-primary   text-white  px-4 py-2 rounded-xl mt-1 inline-block max-w-xs">
+          <div className="bg-primary break-words  text-white  px-4 py-2 rounded-xl mt-1 inline-block max-w-xs">
             {text}
           </div>
 
