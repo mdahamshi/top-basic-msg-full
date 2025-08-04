@@ -14,10 +14,7 @@ const PORT = process.env.PORT || 3000;
 initExpressApp(app);
 registerRoutes(app);
 
-app.get('/api', async (req, res) => {
-  const result = await db.query('SELECT NOW()');
-  res.json({ message: 'Hello from Express!', time: result.rows[0].now });
-});
+
 app.get('/api/health', (req, res) => {
   res.send('Server is healthy');
 });
@@ -37,6 +34,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT,'0.0.0.0', () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
