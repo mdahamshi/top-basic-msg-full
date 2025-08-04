@@ -28,7 +28,7 @@ services:
     build: ./
     container_name: msgapp_nginx
     ports:
-      - "80:80"
+      - "8001:80"
     depends_on:
       - server
     networks:
