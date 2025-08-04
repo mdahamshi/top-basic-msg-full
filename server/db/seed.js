@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS messages (
 
 INSERT INTO messages (name, text, editable) VALUES
 ('Mohammad', 'Love you too :)', FALSE),
+('Mohammad', 'exposed via cloudflare tunnel ! self hosted on my personal server, proxmox, coolify', FALSE),
 ('Sarah', 'I love Dad', FALSE),
 ('Amina', 'I also love Dad.', FALSE),
 ('John', 'Hello everyone!', TRUE),
