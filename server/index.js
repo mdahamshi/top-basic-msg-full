@@ -18,6 +18,9 @@ app.get('/api', async (req, res) => {
   const result = await db.query('SELECT NOW()');
   res.json({ message: 'Hello from Express!', time: result.rows[0].now });
 });
+app.get('/api/health', (req, res) => {
+  res.send('Server is healthy');
+});
 
 // 404 capture
 app.use((req, res, next) => {
