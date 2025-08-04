@@ -17,30 +17,31 @@ services:
     container_name: msgapp_server
     restart: always
     environment:
-      # Connect to postgres using generated values
       POSTGRES_DB: ${SERVICE_USER_POSTGRES}
       POSTGRES_USER: ${SERVICE_USER_POSTGRES}
       POSTGRES_PASSWORD: ${SERVICE_PASSWORD_POSTGRES}
       POSTGRES_DB_URL: postgres://${SERVICE_USER_POSTGRES}:${SERVICE_PASSWORD_POSTGRES}@postgres:5432/${SERVICE_USER_POSTGRES}
-      # Optional: expose your backend FQDN
-      SERVICE_FQDN_SERVER_3000: /api
     depends_on:
       - postgres
     networks:
       - appnet
+    labels:
+      - coolify.proxy=true
+      - coolify.url=api
+      - coolify.port=3000
 
-  nginx:
-    build: ./
-    container_name: msgapp_nginx
-    depends_on:
-      - server
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: msgapp_client
+    restart: always
     networks:
       - appnet
-    environment:
-      # Optional if you want to generate a public frontend URL
-      SERVICE_FQDN_NGINX_80: /
-      # Optionally reference the backend service FQDN
-      BACKEND_URL: ${SERVICE_URL_SERVER}/api
+    labels:
+      - coolify.proxy=true
+      - coolify.url=/
+      - coolify.port=80
 
 volumes:
   pgdata:
