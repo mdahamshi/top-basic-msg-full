@@ -27,7 +27,7 @@ services:
       - appnet
     labels:
       - coolify.proxy=true
-      - coolify.url=api
+      - coolify.url=/api
       - coolify.port=3000
 
   client:
