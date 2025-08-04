@@ -1,13 +1,12 @@
-
 services:
   postgres:
     image: postgres:15
     container_name: msgapp_postgres
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${{SERVICE_USER_POSTGRES}}
+      POSTGRES_USER: ${{SERVICE_USER_POSTGRES}}
+      POSTGRES_PASSWORD: ${{SERVICE_PASSWORD_POSTGRES}}
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -17,8 +16,14 @@ services:
     build: ./server
     container_name: msgapp_server
     restart: always
-    env_file:
-      - ./.env
+    environment:
+      # Connect to postgres using generated values
+      POSTGRES_DB: ${{SERVICE_USER_POSTGRES}}
+      POSTGRES_USER: ${{SERVICE_USER_POSTGRES}}
+      POSTGRES_PASSWORD: ${{SERVICE_PASSWORD_POSTGRES}}
+      DATABASE_URL: postgres://${{SERVICE_USER_POSTGRES}}:${{SERVICE_PASSWORD_POSTGRES}}@postgres:5432/${{SERVICE_USER_POSTGRES}}
+      # Optional: expose your backend FQDN
+      SERVICE_FQDN_SERVER_3000: /api
     depends_on:
       - postgres
     networks:
@@ -33,11 +38,14 @@ services:
       - server
     networks:
       - appnet
+    environment:
+      # Optional if you want to generate a public frontend URL
+      SERVICE_FQDN_NGINX_80: /
+      # Optionally reference the backend service FQDN
+      BACKEND_URL: ${{SERVICE_URL_SERVER}}/api
 
 volumes:
   pgdata:
 
-
 networks:
   appnet:
-
