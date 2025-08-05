@@ -25,6 +25,10 @@ services:
       - postgres
     networks:
       - appnet
+    labels:
+      - coolify.proxy=true
+      - coolify.url=/api
+      - coolify.port=3000
 
   client:
     build:
@@ -34,6 +38,10 @@ services:
     restart: always
     networks:
       - appnet
+    labels:
+      - coolify.proxy=true
+      - coolify.url=/
+      - coolify.port=80
 
 volumes:
   pgdata:
