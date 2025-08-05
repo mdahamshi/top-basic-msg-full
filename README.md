@@ -61,9 +61,6 @@ docker-compose up --build
 
 The app will be available at `http://localhost:8080`.
 
-### 4. Seed Initial Data (Optional)
-
-Run the SQL script located in `backend/init.sql` or let the app create the table automatically on start.
 
 ## API Endpoints
 
