@@ -52,7 +52,7 @@ const messageDelete = async (req, res) => {
   }
   res.status(200).json({
     message: 'message deleted',
-    id: messageId,
+    id
   });
 };
 const messageUpdate = async (req, res) => {
