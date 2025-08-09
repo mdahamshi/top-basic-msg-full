@@ -43,8 +43,8 @@ const messagesCreatePost = async (req, res) => {
 };
 
 const messageDelete = async (req, res) => {
-  const messageId = req.params.id;
-  if (!messageId) throw new Error('No message id provided');
+  const { id } = req.params;
+  if (!id) throw new Error('No message id provided');
   try {
     await db.deletMessage(id);
   } catch (err) {
