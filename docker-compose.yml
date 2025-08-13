@@ -11,7 +11,11 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - appnet
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 20s
+      retries: 4
   server:
     build: ./server
     container_name: msgapp_server
@@ -25,7 +29,11 @@ services:
       - postgres
     networks:
       - appnet
-
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://client:80/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 2
 
   client:
     build:
@@ -35,7 +43,11 @@ services:
     restart: always
     networks:
       - appnet
-
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://server:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 2
 
 volumes:
   pgdata:
